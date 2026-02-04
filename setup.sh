@@ -251,6 +251,7 @@ POSTGRES_PASSWORD=$PG_PASSWORD
 REDASH_DATABASE_URL=$DATABASE_URL
 REDASH_ENFORCE_CSRF=true
 REDASH_GUNICORN_TIMEOUT=60
+REDASH_FEATURE_ALLOW_CUSTOM_JS_VISUALIZATIONS=true
 EOF
 }
 
@@ -262,7 +263,7 @@ setup_compose() {
 	if [ "x$OVERWRITE" = "xyes" -a -e compose.yaml ]; then
 		mv -f compose.yaml compose.yaml.old-${TIMESTAMP_NOW}
 	fi
-	curl -fsSOL https://raw.githubusercontent.com/getredash/setup/"$GIT_BRANCH"/data/compose.yaml
+	curl -fsSOL https://raw.githubusercontent.com/Ghostmxs/redash-setup/"$GIT_BRANCH"/data/compose.yaml
 
 	# Check for conflicts between --version and --preview options
 	if [ "x$PREVIEW" = "xyes" ] && [ -n "$REDASH_VERSION" ]; then
@@ -300,7 +301,7 @@ setup_compose() {
 create_make_default() {
 	echo "** Creating redash_make_default.sh script **"
 
-	curl -fsSOL https://raw.githubusercontent.com/getredash/setup/"$GIT_BRANCH"/redash_make_default.sh
+	curl -fsSOL https://raw.githubusercontent.com/Ghostmxs/redash-setup/"$GIT_BRANCH"/redash_make_default.sh
 	sed -i "s|__COMPOSE_FILE__|$COMPOSE_FILE|" redash_make_default.sh
 	sed -i "s|__TARGET_FILE__|$PROFILE|" redash_make_default.sh
 	chmod +x redash_make_default.sh
